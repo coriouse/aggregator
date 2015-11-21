@@ -15,12 +15,11 @@ import app.aggregator.core.modul.OnFlyModule;
  *
  */
 public class Launcher {
-	
-	public static void main(String[] args) {
-		
-		//String inputPath="c:\\temp\\small_input.txt";
-		String inputPath = "c:\\temp\\big_input.txt";
 
+	public static void main(String[] args) {
+
+		// String inputPath="c:\\temp\\small_input.txt";
+		String inputPath = "c:\\temp\\big_input.txt";
 
 		Calculator calculator = new Calculator(inputPath);
 		calculator.addModule(new AverageModule()).addModule(new AverageMonthModule()).addModule(new OnFlyModule())
