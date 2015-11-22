@@ -1,5 +1,6 @@
 Assmebly with mavein is:
 maven clean test assembly:assembly
+
 Launch aggregator: 
 java -jar aggregator-jar-with-dependencies.jar file=c:\\tepm\\big_input.txt
 
