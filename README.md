@@ -1,3 +1,10 @@
+Assmebly with mavein is:
+maven clean test assembly:assembly
+Launch aggregator: 
+java -jar aggregator-jar-with-dependencies.jar file=c:\\tepm\\big_input.txt
+
+
+Task:
 In the financial world we're operating on a term "financial instrument". You can think of it as of a collection of prices of currencies, commodities, derivatives, etc.
 
 For the purpose of this exercise we provide you an input file with multiple time series containing prices of instruments:
