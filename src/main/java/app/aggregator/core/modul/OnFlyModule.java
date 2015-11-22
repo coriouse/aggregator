@@ -1,8 +1,5 @@
 package app.aggregator.core.modul;
 
-import java.util.List;
-import java.util.Map;
-
 import app.aggregator.core.EngineModule;
 import app.aggregator.model.Instrument;
 
@@ -21,14 +18,7 @@ public class OnFlyModule extends EngineModule {
 		return result;
 	}
 
-	@Override
-	public void addInstruments(Map<String, List<Instrument>> instruments) {
-		super.addInstruments(instruments);
-		calculateOnFly();
-
-	}
-
-	private void calculateOnFly() {
+	public void refresh() {
 		float sum = 0;
 		int counter = 0;
 		for (Instrument i : getInstruments()) {

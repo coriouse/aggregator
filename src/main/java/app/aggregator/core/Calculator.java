@@ -13,8 +13,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import app.aggregator.core.modul.AverageNewstInstrumentsModule;
+import app.aggregator.core.modul.OnFlyModule;
 import app.aggregator.model.Instrument;
 import app.aggregator.util.DefinerInstrument;
+
 /**
  * Calculator of instruments
  * 
@@ -55,7 +57,7 @@ public class Calculator {
 	}
 
 	/**
-	 * Add especially engine for some instrument 
+	 * Add especially engine for some instrument
 	 * 
 	 * @param EngineModule
 	 * @return Calculator
@@ -65,6 +67,7 @@ public class Calculator {
 		addEngineModule(module);
 		return this;
 	}
+
 	/**
 	 * Add default module engins for reminding instruments
 	 * 
@@ -73,7 +76,7 @@ public class Calculator {
 	public Calculator addModuleDefault() {
 		for (int i = 1; i < INSTRUMENTS_COUNT; i++) {
 			String instrument = "INSTRUMENT" + i;
-			if(!MODULES.containsKey(instrument)) {
+			if (!MODULES.containsKey(instrument)) {
 				EngineModule module = new AverageNewstInstrumentsModule(instrument);
 				module.addInstruments(INSTRUMENTS);
 				addEngineModule(module);
@@ -118,16 +121,25 @@ public class Calculator {
 			if (INSTRUMENT1.equals(name) || INSTRUMENT2.equals(name)) {
 				INSTRUMENTS.get(name).add(instrument);
 			} else if (INSTRUMENT3.equals(name)) {
-				INSTRUMENTS.get(INSTRUMENT3).add(instrument);
-				MODULES.get(INSTRUMENT3).addInstruments(INSTRUMENTS);
+				refreshOnFly(instrument);
 			} else {
-				if (INSTRUMENTS.get(name).size() == NEWST) {
-					INSTRUMENTS.get(name).set(INSTRUMENTS.get(name).size() - 1, instrument);
-					Collections.sort(INSTRUMENTS.get(name));
-				} else {
-					INSTRUMENTS.get(name).add(instrument);
-				}
+				addAndSortToLastTenInstruments(instrument);
 			}
+		}
+	}
+
+	private static void refreshOnFly(Instrument instrument) {
+		INSTRUMENTS.get(INSTRUMENT3).add(instrument);
+		((OnFlyModule) MODULES.get(INSTRUMENT3)).refresh();
+	}
+
+	private static void addAndSortToLastTenInstruments(Instrument instrument) {
+		String name = instrument.getName();
+		if (INSTRUMENTS.get(name).size() == NEWST) {
+			INSTRUMENTS.get(name).set(INSTRUMENTS.get(name).size() - 1, instrument);
+			Collections.sort(INSTRUMENTS.get(name));
+		} else {
+			INSTRUMENTS.get(name).add(instrument);
 		}
 	}
 

@@ -7,6 +7,7 @@
   <description>Aggregator</description>
 	<properties>
 		<java-version>1.7</java-version>
+		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
   		<dependencies>
 		<dependency>
