@@ -16,10 +16,29 @@ import app.aggregator.core.modul.OnFlyModule;
  */
 public class Launcher {
 
+	private static final String HELP_MESSAGE = "Example : java -jar aggregator.jar file=c:\\tepm\\big_input.txt";
+
 	public static void main(String[] args) {
 
-		// String inputPath="c:\\temp\\small_input.txt";
-		String inputPath = "c:\\temp\\big_input.txt";
+		String inputPath = null;
+
+		if (args.length == 0) {
+			System.out.println(HELP_MESSAGE);
+			System.exit(1);
+		}
+		for (String param : args) {
+			String[] p = param.split("=");
+			switch (p[0]) {
+			case "file":
+				inputPath = p[1];
+				break;
+			default:
+				System.out.println(HELP_MESSAGE);
+				System.exit(1);
+			}
+		}
+
+		//inputPath = "c:\\tepm\\big_input.txt";
 
 		Calculator calculator = new Calculator(inputPath);
 		calculator.addModule(new AverageModule()).addModule(new AverageMonthModule()).addModule(new OnFlyModule())

@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import app.aggregator.core.modul.AverageNewstInstrumentsModule;
 import app.aggregator.core.modul.OnFlyModule;
 import app.aggregator.model.Instrument;
@@ -24,6 +27,9 @@ import app.aggregator.util.DefinerInstrument;
  *
  */
 public class Calculator {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(Calculator.class);
+
 	/**
 	 * List of instruments
 	 */
@@ -47,12 +53,14 @@ public class Calculator {
 	}
 
 	private static void init() {
+		LOGGER.debug("Init instruments");
 		for (int i = 1; i < INSTRUMENTS_COUNT; i++) {
 			INSTRUMENTS.put("INSTRUMENT" + i, new ArrayList<Instrument>());
 		}
 	}
 
 	public Calculator(String inputPath) {
+		LOGGER.debug(String.format("Input file path: %s", inputPath));
 		this.inputPath = inputPath;
 	}
 
@@ -63,6 +71,8 @@ public class Calculator {
 	 * @return Calculator
 	 */
 	public Calculator addModule(EngineModule module) {
+		LOGGER.info(String.format("Add module %s for instrument %s", module.getClass().getName(),
+				module.getInstrumentName()));
 		module.addInstruments(INSTRUMENTS);
 		addEngineModule(module);
 		return this;
@@ -80,6 +90,8 @@ public class Calculator {
 				EngineModule module = new AverageNewstInstrumentsModule(instrument);
 				module.addInstruments(INSTRUMENTS);
 				addEngineModule(module);
+				LOGGER.debug(String.format("Add default module %s for instrument %s", module.getClass().getName(),
+						instrument));
 			}
 		}
 		return this;
@@ -111,7 +123,7 @@ public class Calculator {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("InputFile exception : ", e);
 		}
 	}
 
